@@ -1,15 +1,7 @@
 fn main() {
     decryption_of_references();
 
-    let s1 = String::from("hello");
-    /*
-        用 s1 的引用作为参数传递给 calculate_length 函数，而不是把 s1 的所有权转移给该函数
-        & 符号即是引用，允许你使用值，但是不获取所有权
-        通过 &s1 语法，我们创建了一个指向 s1 的引用，但是并不拥有它。因为并不拥有这个值，当引用离开作用域后，其指向的值也不会被丢弃
-    */
-    let len = calculate_length(&s1);
-    println!("The length of '{}' is {}.", s1, len);
-
+    immutable_reference();
 
     variable_reference();
 
@@ -30,6 +22,16 @@ fn decryption_of_references() {
 }
 
 // 不可变引用
+fn immutable_reference() {
+    let s1 = String::from("hello");
+    /*
+        用 s1 的引用作为参数传递给 calculate_length 函数，而不是把 s1 的所有权转移给该函数
+        & 符号即是引用，允许你使用值，但是不获取所有权
+        通过 &s1 语法，我们创建了一个指向 s1 的引用，但是并不拥有它。因为并不拥有这个值，当引用离开作用域后，其指向的值也不会被丢弃
+    */
+    let len = calculate_length(&s1);
+    println!("The length of '{}' is {}.", s1, len);
+}
 fn calculate_length(s: &String) -> usize {  // 函数 calculate_length 使用 & 来表明参数 s 的类型是一个引用
     s.len()
 }   // s 离开了作用域。但因为它并不拥有引用值的所有权，所以是安全的
@@ -88,8 +90,9 @@ fn limitation_two_of_variable_references() {
     在 Rust 中编译器可以确保引用永远也不会变成悬垂状态：当你获取数据的引用后，编译器可以确保数据不会在引用结束前被释放，要想释放数据，必须先停止其引用的使用。
 */
 fn dangling_references() {
-    // let reference_to_nothing = dangle();
-    let reference_to_nothing = no_dangle();
+    // let res = dangle();
+    let res = no_dangle();
+    println!("{}", res);
 }
 /*
     尝试创建一个悬垂引用，Rust 会抛出一个编译时错误
